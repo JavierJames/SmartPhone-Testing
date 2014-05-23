@@ -14,7 +14,8 @@ public class Localization {
 	int rssi;
 	static int i=0;
 	
-	static String filename = "/home/swifferayubu/c1.csv";
+	//static String filename = "/home/swifferayubu/c1.csv";
+	static String filename = "c1.csv";
 	
 	
 	
@@ -28,7 +29,7 @@ public class Localization {
 		//Get scanner instance
 		Scanner scanner = new Scanner(new File(filename));
 		String data = "";
-		//Set th delimiter used in file
+		//Set the delimiter used in file
 		scanner.useDelimiter(",");
 	
 		
