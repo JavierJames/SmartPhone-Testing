@@ -51,11 +51,25 @@ public class Localization {
 		while (scanner.hasNext()) 
 		{
 		    data = scanner.next();
-			if((i % 9) ==0 )
+	/*		if((i % 9) ==0 )
 				System.out.println(data + "|" + i);
 			
 			i ++;
-		
+		*/
+		    
+		    if (i == 0)
+               // emp.setId(Integer.parseInt(data));
+            else if (i == 1)
+                //emp.setName(data);
+            else if (i == 2)
+                //emp.setRole(data);
+            else if (i == 3)
+                //emp.setSalary(data);
+            else
+            	   System.out.println("invalid data::" + data);
+            i++; 
+		    
+		    
 		}
 		
 		//Do not forget to close the scanner  
