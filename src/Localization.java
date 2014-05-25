@@ -14,7 +14,7 @@ public class Localization {
 	int sampleid=0; 
 	//String ssid = null; 
 	String bssid= null;
-	int rssi;
+	static int rssi;
 	static int i=1;
 	//static int i=0;
 	
@@ -34,9 +34,9 @@ public class Localization {
 		float [] data_test = {-14, -100, -40, - 59, -74};
 		
 		float [] hst;
-		
+		int [] histogram;
 	
-		//Get scanner instance
+		//Get scanntr instance
 		Scanner scanner = new Scanner(new File(filename));
 		String data = "";
 		//Set the delimiter used in file
@@ -61,11 +61,16 @@ public class Localization {
 			list_ap = fetchAP_sample(s);
 			
 			System.out.println("List of AP " + list_ap);
-			
+			//System.out.println("AP 1: "+list_ap.get(0));
 			
 			/*create histogram for a specific AP */
-			//create_histogram((String) list_ap.get(0));
+			histogram =create_histogram((String) list_ap.get(0));
 			
+			System.out.println("histogram" );
+			for (int i=0; i<histogram.length; i++)
+			{
+				System.out.println("value:"+histogram[i] );
+			}
 			
 				
 
@@ -130,7 +135,7 @@ public class Localization {
 		ArrayList list_ap = new ArrayList();
 
     	/*skip he first line, header */
-    s.nextLine();
+		s.nextLine();
 		//	System.out.println(s.nextLine());
     	
     	
@@ -158,82 +163,6 @@ public class Localization {
     	}while(s.hasNextLine()==true);
     	
     	
-    	
-    	  	
-    	
-//		while(s.hasNextLine())
-	//		{
-		/*	  System.out.println("line id:" +i);
-			  data1=s.findInLine("1");
-			  System.out.println(data1); //Apple
-			
-			for(int j=1; j<columnID_AP; j++ ){
-				data1=s.next(); 
-							
-			}
-			System.out.println(data1); //Apple
-			
-			while((data1 == null) && (s.hasNextLine()== true) )
-			{
-				s.nextLine();
-				System.out.println(data1);
-				
-				data1 = s.findInLine(" 1");
-				System.out.println(data1);
-				
-				
-			}
-			*/
-			
-			/*find next occurance of 1st sample */
-		//data1=	s.nextLine();
-		//System.out.println(s.next());
-	//		System.out.println(s.next());
-			
-			
-		//  System.out.println(data1); 
-			
-		//	data1=s.findInLine("1");
-			  
-		//	  System.out.println(data1); //Apple
-				
-		/*		for(int j=0; j<columnID_AP; j++ ){
-					data1=s.next(); 
-								
-				}
-				System.out.println(data1); //Apple
-					
-			*/
-			
-		//	System.out.println(data1); //1
-			/*get AP column */
-		//	data1=s.next(); 
-		//	System.out.println(data1); //Apple
-			
-		//	data1=s.next(); 
-		//	System.out.println(data1); //2
-			
-	//		data1=s.next();
-		//	System.out.println(data1); //next row //2
-			
-		//	data1=s.next();
-			
-		//	System.out.println(data1);
-			
-			
-			  //data1 = s.next();
-				//System.out.println(data1);
-				
-				//if(i==columnID_endofCSV ) i=0;
-		
-				//if(i==columnID_AP ){
-				//if(i==(columnID_AP-1) ){
-					//list_ap.add(data1);
-				//}	
-				
-							
-		//		i++;
-		//	}
 		
     	return list_ap;
     	
@@ -273,20 +202,101 @@ public class Localization {
     	
     }
     
-	public static void create_histogram (String ap) throws FileNotFoundException{
+	public static int []create_histogram (String ap) throws FileNotFoundException{
+		
 		Scanner s = new Scanner((Readable) new BufferedReader(new FileReader(testfile2)));
-		String sample=null;
+		String data1=null, sample=null;
+		int rssi_relative_distance=1; //relative distance from rssi column and AP name column
+		int bin= 1;
+		int min=0;
+		int max=15;
+		int rssi = 0;
+		
+		//int [][] histogram = null;
+		int [] histogram =  new int [8];
+		
+		//	ArrayList list_ap = new ArrayList();
 	
+		s.useDelimiter(",|\n\n|\n"); // ski
+		
+		/*initialize histogram */
+		for(int i=0; i<histogram.length; i++)
+		{
+			histogram[i]=0;
+			
+		}
+		
+		/*create buffer to hold rssi value for the count */
+		/*for(int i=0; i<15; i++)
+		{
+			histogram[i]=new int [2];
+			
+		}
+		*/
+		
+		
+		
 		try{
-			
-			/* search through file for given AP*/
-			System.out.println(" AP  " + ap );
-			sample=s.findInLine(ap); 
-			System.out.println("string :" + sample );
-			/* save the RSSI values */
-			
-			/*count the amount of times */
-				
+
+	    	/*skip he first line, header */
+			s.nextLine();
+			//	System.out.println(s.nextLine());
+	    	
+	    	
+	    	do{
+	    	//	System.out.println("......");
+	    		/*find only AP from first samples */
+	    		if(s.findInLine(ap) != null){
+	    		
+	    			/* get rssi value */
+	    			for(int j=1; j<rssi_relative_distance+1; j++ ){
+	    				data1=s.next(); 
+//	    				System.out.println("data during skip: "+data1);
+	    		  
+	    			}
+	    			
+	    			
+		    		System.out.println("RSSI: "+data1);
+		    		System.out.println("rssi length:"+data1.length());
+		    		rssi = Integer.parseInt(data1);
+		    		System.out.println("rssi int:"+rssi);
+		    		/* update histogram */
+		    		
+		    		if((rssi>=0) && (rssi<2)){
+		    		histogram[0] ++;
+		    		}
+		    		else if(rssi<4){
+		    			histogram[1] ++;	
+		    		} 
+		    		else if(rssi<6){
+		    			histogram[2] ++;
+		    		} 
+		    		else if(rssi<8){
+		    			histogram[3] ++;
+		    		} 
+		    		else if(rssi<10){
+		    			histogram[4] ++;
+		    		} 
+		    		else if(rssi<12){
+		    			histogram[5] ++;
+		    		} 
+		    		else if(rssi<14){
+		    			histogram[6] ++;
+		    		} 
+		    		else if(rssi<16){
+		    			histogram[7] ++;
+		    		} 
+		    		
+
+		    		
+		    		
+		    		
+		    	}		
+	    		s.nextLine();
+	    		
+	    	}while(s.hasNextLine()==true);
+	    		
+
 	
 			
 		}finally{
@@ -294,7 +304,8 @@ public class Localization {
 			
 			
 		}
-		
+
+		return histogram;
 		
 	}
 
