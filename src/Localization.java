@@ -57,7 +57,9 @@ public class Localization {
 			s.useDelimiter(",|\n\n|\n"); // ski
 		
 			/* get list of all AP's */
-			list_ap = fetchAP(s);
+			//list_ap = fetchAP(s);
+			list_ap = fetchAP_sample(s);
+			
 			System.out.println("List of AP " + list_ap);
 			
 			
@@ -120,6 +122,128 @@ public class Localization {
 	}
 
 
+	/* 
+	 * Fetch AP from a list in csv file, only the first sample
+	 * */
+	public static ArrayList fetchAP_sample(Scanner s){
+		String data1=null;
+		ArrayList list_ap = new ArrayList();
+
+    	/*skip he first line, header */
+    s.nextLine();
+		//	System.out.println(s.nextLine());
+    	
+    	
+    	do{
+    	//	System.out.println("......");
+    		/*find only AP from first samples */
+    		if(s.findInLine("1") != null){
+    		
+    				/* get AP name */
+    			for(int j=1; j<columnID_AP; j++ ){
+    				data1=s.next(); 
+    				list_ap.add(data1);
+    			}
+    		//	System.out.println("AP: "+data1); //Apple
+    			
+    		}	
+    		
+    		
+    		/*advance to the next line */
+		    s.nextLine();
+    		//System.out.println("nextline: " + s.nextLine());
+			//System.out.println("hasnextline?: "+s.hasNextLine());
+			
+		
+    	}while(s.hasNextLine()==true);
+    	
+    	
+    	
+    	  	
+    	
+//		while(s.hasNextLine())
+	//		{
+		/*	  System.out.println("line id:" +i);
+			  data1=s.findInLine("1");
+			  System.out.println(data1); //Apple
+			
+			for(int j=1; j<columnID_AP; j++ ){
+				data1=s.next(); 
+							
+			}
+			System.out.println(data1); //Apple
+			
+			while((data1 == null) && (s.hasNextLine()== true) )
+			{
+				s.nextLine();
+				System.out.println(data1);
+				
+				data1 = s.findInLine(" 1");
+				System.out.println(data1);
+				
+				
+			}
+			*/
+			
+			/*find next occurance of 1st sample */
+		//data1=	s.nextLine();
+		//System.out.println(s.next());
+	//		System.out.println(s.next());
+			
+			
+		//  System.out.println(data1); 
+			
+		//	data1=s.findInLine("1");
+			  
+		//	  System.out.println(data1); //Apple
+				
+		/*		for(int j=0; j<columnID_AP; j++ ){
+					data1=s.next(); 
+								
+				}
+				System.out.println(data1); //Apple
+					
+			*/
+			
+		//	System.out.println(data1); //1
+			/*get AP column */
+		//	data1=s.next(); 
+		//	System.out.println(data1); //Apple
+			
+		//	data1=s.next(); 
+		//	System.out.println(data1); //2
+			
+	//		data1=s.next();
+		//	System.out.println(data1); //next row //2
+			
+		//	data1=s.next();
+			
+		//	System.out.println(data1);
+			
+			
+			  //data1 = s.next();
+				//System.out.println(data1);
+				
+				//if(i==columnID_endofCSV ) i=0;
+		
+				//if(i==columnID_AP ){
+				//if(i==(columnID_AP-1) ){
+					//list_ap.add(data1);
+				//}	
+				
+							
+		//		i++;
+		//	}
+		
+    	return list_ap;
+    	
+    	
+    }
+
+	
+	
+	
+	
     public static ArrayList fetchAP(Scanner s){
 		String data1=null;
 		ArrayList list_ap = new ArrayList();
