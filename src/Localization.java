@@ -1,5 +1,8 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -16,7 +19,12 @@ public class Localization {
 	
 	//static String filename = "/home/swifferayubu/c1.csv";
 	static String filename = "c1.csv";
+	static String testfile = "test.csv";
+	static String testfile2 = "testc1.csv";
 	
+	
+	static final int columnID_AP = 2;
+	static final int columnID_endofCSV = 6;
 	
 	
 	public static void main(String args[]) throws FileNotFoundException {
@@ -31,11 +39,35 @@ public class Localization {
 		String data = "";
 		//Set the delimiter used in file
 		scanner.useDelimiter(",");
-	
+
+			
+		Scanner s = null;
+
+		ArrayList list_ap ;
+		
+		//		s.useDelimiter(",");
+	//	s.useDelimiter(",\\s*");
+		
+		try{
+			s = new Scanner((Readable) new BufferedReader(new FileReader(testfile2)));
+			//s.useDelimiter(",");
+			//s.useDelimiter(",\\s*\n*");
+			s.useDelimiter(",|\n\n|\n"); // ski
+		
+			list_ap = fetchAP(s);
+			create_histogram((String) list_ap.get(0));
+			
+			
+			System.out.println("List of AP " + list_ap);
+				
+
+		}finally{
+			if(s != null) s.close();
+			
+		}
 		
 		
-		
-		hst=createHistogram(data_test) ; 
+	/*	hst=createHistogram(data_test) ; 
 		
 		for(int i=0; i<hst.length; i++){
 		//	System.out.println("i: "+i, "freg:"+hst[i] );
@@ -51,13 +83,13 @@ public class Localization {
 		while (scanner.hasNext()) 
 		{
 		    data = scanner.next();
-	/*		if((i % 9) ==0 )
+*/	/*		if((i % 9) ==0 )
 				System.out.println(data + "|" + i);
 			
 			i ++;
 		*/
 		    
-		    if (i == 0)
+		/*    if (i == 0)
                // emp.setId(Integer.parseInt(data));
             else if (i == 1)
                 //emp.setName(data);
@@ -68,12 +100,12 @@ public class Localization {
             else
             	   System.out.println("invalid data::" + data);
             i++; 
+		  */  
 		    
-		    
-		}
+	//	}
 		
 		//Do not forget to close the scanner  
-		scanner.close();
+		//scanner.close();
    
 	
 		
@@ -82,9 +114,59 @@ public class Localization {
 	}
 
 
+    public static ArrayList fetchAP(Scanner s){
+		String data1=null;
+		ArrayList list_ap = new ArrayList();
 
+    	
+    	s.nextLine();
+		while(s.hasNext())
+			{
+			if(i==columnID_endofCSV +1) i=0;
+		//	   System.out.println("id:" +i);
+				data1 = s.next();
+		
+				if(i==columnID_AP ){
+			//		System.out.println(data1);
+					list_ap.add(data1);
+				}	
+				
+							
+				i++;
+			}
+				
+    	return list_ap;
+    	
+    	
+    }
+    
+	public static void create_histogram (String ap) throws FileNotFoundException{
+		Scanner s = new Scanner((Readable) new BufferedReader(new FileReader(testfile2)));
+		String sample=null;
 	
+		try{
+			
+			/* search through file for given AP*/
+			System.out.println(" AP  " + ap );
+			sample=s.findInLine(ap);
+			System.out.println("string :" + sample );
+			/* save the RSSI values */
+			
+			/*count the amount of times */
+				
 	
+			
+		}finally{
+			if(s != null) s.close();
+			
+			
+		}
+		
+		
+	}
+
+    
+    
 	/* filter data
 	 * Remove beginning of the data. in case of noise  */
     public float [] filterdata(float [] sampledata){
