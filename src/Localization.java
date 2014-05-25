@@ -15,16 +15,18 @@ public class Localization {
 	//String ssid = null; 
 	String bssid= null;
 	int rssi;
-	static int i=0;
+	static int i=1;
+	//static int i=0;
+	
 	
 	//static String filename = "/home/swifferayubu/c1.csv";
 	static String filename = "c1.csv";
 	static String testfile = "test.csv";
-	static String testfile2 = "testc1.csv";
+	static String testfile2 = "test2.csv";
 	
 	
 	static final int columnID_AP = 2;
-	static final int columnID_endofCSV = 6;
+	static final int columnID_endofCSV = 3;
 	
 	
 	public static void main(String args[]) throws FileNotFoundException {
@@ -54,11 +56,15 @@ public class Localization {
 			//s.useDelimiter(",\\s*\n*");
 			s.useDelimiter(",|\n\n|\n"); // ski
 		
+			/* get list of all AP's */
 			list_ap = fetchAP(s);
-			create_histogram((String) list_ap.get(0));
-			
-			
 			System.out.println("List of AP " + list_ap);
+			
+			
+			/*create histogram for a specific AP */
+			//create_histogram((String) list_ap.get(0));
+			
+			
 				
 
 		}finally{
@@ -122,12 +128,15 @@ public class Localization {
     	s.nextLine();
 		while(s.hasNext())
 			{
-			if(i==columnID_endofCSV +1) i=0;
-		//	   System.out.println("id:" +i);
+			 //  System.out.println("id:" +i);
 				data1 = s.next();
+				//System.out.println(data1);
+				
+				if(i==columnID_endofCSV ) i=0;
 		
 				if(i==columnID_AP ){
-			//		System.out.println(data1);
+				//if(i==(columnID_AP-1) ){
+				//	System.out.println(data1);
 					list_ap.add(data1);
 				}	
 				
@@ -148,7 +157,7 @@ public class Localization {
 			
 			/* search through file for given AP*/
 			System.out.println(" AP  " + ap );
-			sample=s.findInLine(ap);
+			sample=s.findInLine(ap); 
 			System.out.println("string :" + sample );
 			/* save the RSSI values */
 			
